@@ -405,3 +405,11 @@ function collectWater(event) {
   combo++;
   score += 10 + combo * 2;
 }
+document.querySelectorAll("#difficulty button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    difficulty = btn.dataset.mode;
+
+    document.querySelectorAll("#difficulty button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
