@@ -62,6 +62,9 @@ h1 {
 
 /* BAD ITEM */
 .bad {
+  background: #fff2cc;
+  border: 2px solid #f5402c;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
