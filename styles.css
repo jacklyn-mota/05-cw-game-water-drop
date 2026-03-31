@@ -1,33 +1,13 @@
-/* Charity: water Brand Colors & Fonts
-
-Primary Colors:
-- Yellow:     #FFC907
-- Blue:       #2E9DF7
-
-Secondary Colors:
-- Light Blue: #8BD1CB
-- Green:      #4FCB53
-- Orange:     #FF902A
-- Red:        #F5402C
-- Dark Green: #159A48
-- Pink:       #F16061
-
-Fonts:
-- Proxima Nova
-- Avenir
-
-*/
-
+/* ================= GLOBAL ================= */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   text-align: center;
   background-color: #f4f9fb;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
 }
 
-/* Header styling */
+/* ================= HEADER ================= */
 header {
   background-color: white;
   padding: 20px 0;
@@ -37,48 +17,57 @@ header {
 
 .header-logo {
   max-width: 250px;
-  height: auto;
+  width: 80%;
 }
 
+/* ================= TITLE ================= */
+h1 {
+  margin: 10px;
+}
 
-/* Game box */
+/* ================= INFO BAR ================= */
+#info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* ================= GAME AREA ================= */
 #game-area {
-  width: 90vw;              /* scales with screen width */
-  max-width: 400px;        /* prevents it from getting too big */
-  aspect-ratio: 1 / 1;     /* keeps it a square */
+  width: 90vw;
+  max-width: 400px;
+  aspect-ratio: 1 / 1;
   border: 2px solid #333;
   margin: 20px auto;
   position: relative;
   background-color: white;
+  overflow: hidden;
 }
 
-/* Water can target */
+/* ================= DROPS ================= */
 .drop {
   width: 40px;
   height: 40px;
   background-image: url("img/water-can-transparent.png");
   background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   position: absolute;
   cursor: pointer;
-  transition: transform 0.1s;
   animation: popIn 0.2s ease;
 }
 
-@keyframes popIn {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+.drop:hover {
+  transform: scale(1.2);
 }
 
+/* BAD ITEM */
+.bad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-/* Buttons */
+/* ================= BUTTONS ================= */
 button {
   padding: 10px 15px;
   margin: 5px;
@@ -87,15 +76,10 @@ button {
   background-color: #2E9DF7;
   color: white;
   border-radius: 6px;
-  transition: background 0.2s;
 }
 
 button:hover {
   background-color: #1c7ed6;
-}
-
-.drop:hover {
-  transform: scale(1.2);
 }
 
 #start-btn {
@@ -103,23 +87,86 @@ button:hover {
   color: black;
 }
 
-/* Stack info on small screens */
-#info {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-/* Buttons stack on mobile */
+/* ================= CONTROLS ================= */
 #controls {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-/* Smaller text on small screens */
-@media (max-width: 500px) {
+/* ================= DIFFICULTY ================= */
+#difficulty {
+  margin: 10px;
+}
+
+#difficulty button.active {
+  background-color: #FFC907;
+}
+
+/* ================= FEEDBACK TEXT ================= */
+.feedback {
+  position: absolute;
+  font-weight: bold;
+  animation: floatUp 1s forwards;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes floatUp {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-40px); }
+}
+
+/* ================= GAME OVER ================= */
+#game-over {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.overlay-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+/* ================= FOOTER ================= */
+footer {
+  margin-top: 30px;
+  padding: 15px;
+  background: #f4f4f4;
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+
+/* Tablets */
+@media (max-width: 768px) {
+  #game-area {
+    max-width: 320px;
+  }
+
+  .drop {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
   h1 {
     font-size: 20px;
   }
@@ -127,140 +174,25 @@ button:hover {
   p {
     font-size: 14px;
   }
-}
 
-.feedback {
-  position: absolute;
-  color: green;
-  font-weight: bold;
-  pointer-events: none;
-  animation: floatUp 1s ease-out forwards;
-}
-
-@keyframes floatUp {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
+  #game-area {
+    max-width: 280px;
   }
-  100% {
-    opacity: 0;
-    transform: translateY(-40px);
+
+  .drop {
+    width: 30px;
+    height: 30px;
   }
 }
 
-/* Overlay background */
-#game-over {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 1000;
-}
-
-/* Hide class */
-.hidden {
-  display: none !important;
-}
-
-/* Box content */
-.overlay-content {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-/* Button styling */
-#play-again-btn {
-  margin-top: 10px;
-  padding: 10px 15px;
-  cursor: pointer;
-}
-
-/* Confetti pieces that fall from the top of the screen */
-.confetti-piece {
-  position: fixed;
-  z-index: 1400;
-  pointer-events: none;
-  opacity: 0.95;
-  animation-name: confettiFall;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-
-@keyframes confettiFall {
-  0% {
-    transform: translate3d(0, -10vh, 0) rotate(0deg);
-    opacity: 1;
+/* Large screens */
+@media (min-width: 1200px) {
+  #game-area {
+    max-width: 500px;
   }
-  100% {
-    transform: translate3d(var(--drift), 110vh, 0) rotate(540deg);
-    opacity: 0.9;
+
+  .drop {
+    width: 45px;
+    height: 45px;
   }
-}
-
-@keyframes dropFall {
-    from {
-        transform: translateY(-20px);
-    }
-    to {
-        transform: translateY(600px);
-    }
-}
-
-@media (max-width: 850px) {
-    .game-wrapper, .score-panel, #game-container {
-        width: 95vw;
-    }
-    
-    #game-container {
-        height: 70vh;
-    }
-}
-
-
-#difficulty {
-  margin: 10px;
-}
-
-#difficulty button {
-  margin: 5px;
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-}
-
-#difficulty button.active {
-  background-color: #FFC907; /* charity: water yellow */
-}
-
-.bad {
-  background-image: url("img/dirty-water.png"); /* or warning icon */
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-}
-
-.feedback {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-footer {
-  margin-top: 30px;
-  padding: 15px;
-  background: #f4f4f4;
-  text-align: center;
-  font-size: 14px;
-}
-
-#controls {
-  margin-top: 10px;
 }

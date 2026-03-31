@@ -3,66 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <title>Clean Water Caravan</title>
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-  <!-- Header with logo -->
+  <!-- ================= HEADER ================= -->
   <header>
-    <img src="img/cw_logo_horizontal.png" alt="charity: water logo" class="header-logo">
+    <img src="img/cw_logo-horizontal.png" alt="charity: water logo" class="header-logo">
   </header>
 
-  <!-- Title -->
+  <!-- ================= TITLE ================= -->
   <h1>💧 Clean Water Caravan</h1>
 
-  <!-- Game Info -->
+  <!-- ================= GAME INFO ================= -->
   <div id="info">
     <p id="score">Score: 0</p>
     <p id="people">People Served: 0</p>
     <p id="timer">Time: 30</p>
   </div>
 
-  <!-- Game Area -->
+  <!-- ================= GAME AREA ================= -->
   <div id="game-area"></div>
 
-  <!-- Buttons -->
+  <!-- ================= CONTROLS ================= -->
   <div id="controls">
     <button id="start-btn">Start Game</button>
     <button id="reset-btn">Reset</button>
   </div>
 
-  <!-- Game Over Overlay -->
-<div id="game-over" class="hidden">
-  <div class="overlay-content">
-    <h2>Game Over 💧</h2>
-    <p id="final-score"></p>
-    <p id="final-people"></p>
-    <button id="play-again-btn">Play Again</button>
-    <p id="message"></p>
+  <!-- ================= DIFFICULTY ================= -->
+  <div id="difficulty">
+    <p>Select Difficulty:</p>
+    <button data-mode="easy">Easy</button>
+    <button data-mode="normal" class="active">Normal</button>
+    <button data-mode="hard">Hard</button>
   </div>
-</div>
 
-<div id="difficulty">
-  <button data-mode="easy">Easy</button>
-  <button data-mode="normal">Normal</button>
-  <button data-mode="hard">Hard</button>
-</div>
-<div id="difficulty">
-  <p>Select Difficulty:</p>
-  <button data-mode="easy">Easy</button>
-  <button data-mode="normal" class="active">Normal</button>
-  <button data-mode="hard">Hard</button>
-</div>
+  <!-- ================= GAME OVER SCREEN ================= -->
+  <div id="game-over" class="hidden">
+    <div class="overlay-content">
+      <h2>Game Over 💧</h2>
+      <p id="final-score"></p>
+      <p id="final-people"></p>
+      <button id="play-again-btn">Play Again</button>
+      <p id="message"></p>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <p>Learn more & support the mission of charity: water</p>
+    <a href="https://www.charitywater.org/" target="_blank">Website</a> |
+    <a href="https://www.charitywater.org/donate" target="_blank">Donate</a>
+  </footer>
+
+  <!-- JS FILE -->
   <script src="script.js"></script>
+
 </body>
-<footer>
-  <p>Learn more & support the mission of 
-    :contentReference[oaicite:0]{index=0}
-  </p>
-  <a href="https://www.charitywater.org/" target="_blank">Website</a> |
-  <a href="https://www.charitywater.org/donate" target="_blank">Donate</a>
-</footer>
-
-
 </html>

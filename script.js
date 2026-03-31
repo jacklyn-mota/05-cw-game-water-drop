@@ -1,13 +1,10 @@
 // =====================================
-// CLEAN WATER CARAVAN - FINAL VERSION
+// CLEAN WATER CARAVAN - IMPROVED VERSION
 // =====================================
 
-// Confirm JS is connected
 console.log("JavaScript connected");
 
-// -------------------
-// HTML ELEMENTS
-// -------------------
+// ================= ELEMENTS =================
 const gameArea = document.getElementById("game-area");
 const scoreEl = document.getElementById("score");
 const peopleEl = document.getElementById("people");
@@ -22,16 +19,12 @@ const finalPeopleEl = document.getElementById("final-people");
 const playAgainBtn = document.getElementById("play-again-btn");
 const messageEl = document.getElementById("message");
 
-// -------------------
-// SOUND EFFECTS
-// -------------------
+// ================= SOUND =================
 const collectSound = new Audio("sounds/click.mp3");
 const badSound = new Audio("sounds/bad.mp3");
 const winSound = new Audio("sounds/win.mp3");
 
-// -------------------
-// DIFFICULTY SETTINGS
-// -------------------
+// ================= DIFFICULTY =================
 let difficulty = "normal";
 
 const settings = {
@@ -40,21 +33,7 @@ const settings = {
   hard:   { time: 20, spawnMin: 500,  spawnMax: 1000 }
 };
 
-// -------------------
-// MILESTONES
-// -------------------
-const milestones = [
-  { score: 50, message: "Great start! 💧" },
-  { score: 100, message: "You're helping a village! 👏" },
-  { score: 200, message: "Halfway there! 🚰" },
-  { score: 300, message: "Incredible impact! 🌍" }
-];
-
-let shownMilestones = [];
-
-// -------------------
-// GAME STATE VARIABLES
-// -------------------
+// ================= GAME STATE =================
 let score = 0;
 let peopleServed = 0;
 let timeLeft = 30;
@@ -62,15 +41,9 @@ let timeLeft = 30;
 let gameActive = false;
 let gameInterval;
 let spawnTimeout;
-
 let combo = 0;
 
-// Hide game over screen initially
-gameOverScreen.classList.add("hidden");
-
-// -------------------
-// START GAME
-// -------------------
+// ================= START GAME =================
 startBtn.addEventListener("click", startGame);
 
 function startGame() {
@@ -78,12 +51,10 @@ function startGame() {
 
   const config = settings[difficulty];
 
-  // Reset game state
   score = 0;
   peopleServed = 0;
   timeLeft = config.time;
   combo = 0;
-  shownMilestones = [];
 
   gameActive = true;
   gameOverScreen.classList.add("hidden");
@@ -93,9 +64,7 @@ function startGame() {
   startTimer();
 }
 
-// -------------------
-// TIMER
-// -------------------
+// ================= TIMER =================
 function startTimer() {
   clearInterval(gameInterval);
 
@@ -103,139 +72,93 @@ function startTimer() {
     timeLeft--;
     timerEl.textContent = `Time: ${timeLeft}`;
 
-    if (timeLeft <= 0) {
-      endGame();
-    }
+    if (timeLeft <= 0) endGame();
   }, 1000);
 }
 
-// -------------------
-// SPAWN SPEED (BASED ON DIFFICULTY)
-// -------------------
+// ================= SPAWN =================
 function getSpawnInterval() {
   const config = settings[difficulty];
   return Math.random() * (config.spawnMax - config.spawnMin) + config.spawnMin;
 }
 
-// -------------------
-// SPAWN GOOD DROP
-// -------------------
 function spawnDrop() {
   if (!gameActive) return;
 
-  // Remove old items
-  document.querySelectorAll(".drop").forEach(item => item.remove());
+  gameArea.innerHTML = ""; // ensures only one drop at a time
 
   const drop = document.createElement("div");
   drop.classList.add("drop");
 
-  const rect = gameArea.getBoundingClientRect();
-  const x = Math.random() * (rect.width - 40);
-  const y = Math.random() * (rect.height - 40);
-
-  drop.style.left = `${x}px`;
-  drop.style.top = `${y}px`;
-
+  positionElement(drop);
   drop.addEventListener("click", collectWater);
 
   gameArea.appendChild(drop);
 
-  // 30% chance to spawn bad item
-  if (Math.random() < 0.3) {
-    spawnBadItem();
-  }
+  if (Math.random() < 0.3) spawnBadItem();
 
   spawnTimeout = setTimeout(spawnDrop, getSpawnInterval());
 }
 
-// -------------------
-// SPAWN BAD ITEM
-// -------------------
+// ================= POSITION HELPER =================
+function positionElement(el) {
+  const rect = gameArea.getBoundingClientRect();
+  const size = 40;
+
+  const x = Math.random() * (rect.width - size);
+  const y = Math.random() * (rect.height - size);
+
+  el.style.left = `${x}px`;
+  el.style.top = `${y}px`;
+}
+
+// ================= BAD ITEM =================
 function spawnBadItem() {
   const bad = document.createElement("div");
   bad.classList.add("drop", "bad");
+  bad.textContent = "⚠️";
 
-  const rect = gameArea.getBoundingClientRect();
-  const x = Math.random() * (rect.width - 40);
-  const y = Math.random() * (rect.height - 40);
+  positionElement(bad);
 
-  bad.style.left = `${x}px`;
-  bad.style.top = `${y}px`;
-
-  bad.addEventListener("click", (event) => {
+  bad.addEventListener("click", (e) => {
     if (!gameActive) return;
 
-    let penalty = 5;
-    if (score > 50) penalty = 10;
-    if (score > 150) penalty = 15;
-
+    let penalty = score > 150 ? 15 : score > 50 ? 10 : 5;
     score = Math.max(0, score - penalty);
     combo = 0;
 
     updateDisplay();
     badSound.play();
 
-    const rect = gameArea.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    showNegativeFeedback(x, y, penalty);
-
+    showNegativeFeedback(e, penalty);
     bad.remove();
   });
 
   gameArea.appendChild(bad);
 }
 
-// -------------------
-// COLLECT GOOD ITEM
-// -------------------
-function collectWater(event) {
+// ================= COLLECT =================
+function collectWater(e) {
   if (!gameActive) return;
 
-  const drop = event.target;
-
   combo++;
-
   score += 10 + combo * 2;
   peopleServed += 20;
 
   updateDisplay();
   collectSound.play();
 
-  const rect = gameArea.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-
-  showFeedback(x, y);
-
-  drop.remove();
+  showFeedback(e);
+  e.target.remove();
 }
 
-// -------------------
-// UPDATE UI
-// -------------------
+// ================= UI =================
 function updateDisplay() {
   scoreEl.textContent = `Score: ${score}`;
   peopleEl.textContent = `People Served: ${peopleServed}`;
-  checkMilestones();
 }
 
-// -------------------
-// MILESTONE CHECK
-// -------------------
-function checkMilestones() {
-  milestones.forEach(m => {
-    if (score >= m.score && !shownMilestones.includes(m.score)) {
-      messageEl.textContent = m.message;
-      shownMilestones.push(m.score);
-    }
-  });
-}
-
-// -------------------
-// END GAME
-// -------------------
+// ================= END GAME =================
 function endGame() {
   gameActive = false;
 
@@ -246,21 +169,14 @@ function endGame() {
 
   finalScoreEl.textContent = `Final Score: ${score}`;
   finalPeopleEl.textContent = `People Served: ${peopleServed}`;
-  messageEl.textContent = `You helped ${peopleServed} people get clean water! 💧`;
+  messageEl.textContent = `You helped ${peopleServed} people 💧`;
 
   winSound.play();
   gameOverScreen.classList.remove("hidden");
 }
 
-// -------------------
-// RESET GAME
-// -------------------
+// ================= RESET =================
 resetBtn.addEventListener("click", resetGame);
-
-playAgainBtn.addEventListener("click", () => {
-  gameOverScreen.classList.add("hidden");
-  startGame();
-});
 
 function resetGame() {
   clearInterval(gameInterval);
@@ -268,51 +184,54 @@ function resetGame() {
 
   gameActive = false;
 
+  const config = settings[difficulty];
+  timeLeft = config.time;
+
   score = 0;
   peopleServed = 0;
-  timeLeft = 30;
   combo = 0;
 
   gameArea.innerHTML = "";
   updateDisplay();
-
   timerEl.textContent = `Time: ${timeLeft}`;
+
   gameOverScreen.classList.add("hidden");
 }
 
-// -------------------
-// FEEDBACK TEXT
-// -------------------
-function showFeedback(x, y) {
+// ================= FEEDBACK =================
+function showFeedback(e) {
   const text = document.createElement("div");
   text.classList.add("feedback");
   text.textContent = `+20 👥 (x${combo})`;
 
-  text.style.left = `${x}px`;
-  text.style.top = `${y}px`;
-
-  gameArea.appendChild(text);
-
-  setTimeout(() => text.remove(), 1000);
+  placeFeedback(text, e);
 }
 
-function showNegativeFeedback(x, y, penalty) {
+function showNegativeFeedback(e, penalty) {
   const text = document.createElement("div");
   text.classList.add("feedback");
   text.style.color = "red";
-  text.textContent = `-${penalty} ❌`;
+  text.textContent = `-${penalty}`;
 
-  text.style.left = `${x}px`;
-  text.style.top = `${y}px`;
+  placeFeedback(text, e);
+}
+
+function placeFeedback(text, e) {
+  const rect = gameArea.getBoundingClientRect();
+  text.style.left = `${e.clientX - rect.left}px`;
+  text.style.top = `${e.clientY - rect.top}px`;
 
   gameArea.appendChild(text);
-
   setTimeout(() => text.remove(), 1000);
 }
 
-// -------------------
-// DIFFICULTY BUTTONS
-// -------------------
+// ================= PLAY AGAIN =================
+playAgainBtn.addEventListener("click", () => {
+  gameOverScreen.classList.add("hidden");
+  startGame();
+});
+
+// ================= DIFFICULTY =================
 document.querySelectorAll("#difficulty button").forEach(btn => {
   btn.addEventListener("click", () => {
     difficulty = btn.dataset.mode;
