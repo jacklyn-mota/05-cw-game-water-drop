@@ -1,70 +1,120 @@
 /* ================= GLOBAL ================= */
+:root {
+  --bg: #f4f9fb;
+  --card: #ffffff;
+  --text: #1f2933;
+  --border: #2f3e46;
+  --brand-yellow: #ffc907;
+  --brand-blue: #2e9df7;
+  --brand-blue-hover: #1c7ed6;
+  --page-padding: clamp(12px, 3vw, 24px);
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
-  font-family: 'Inter', sans-serif;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Inter", sans-serif;
   text-align: center;
-  background-color: #f4f9fb;
+  color: var(--text);
+  background-color: var(--bg);
   margin: 0;
   padding: 0;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+a,
+img,
+button {
+  max-width: 100%;
 }
 
 /* ================= HEADER ================= */
 header {
-  background-color: white;
-  padding: 20px 0;
-  border-bottom: 2px solid #FFC907;
-  margin-bottom: 20px;
+  width: 100%;
+  background-color: var(--card);
+  padding: clamp(12px, 2vw, 20px) 0;
+  border-bottom: 2px solid var(--brand-yellow);
 }
 
 .header-logo {
-  max-width: 250px;
-  width: 80%;
+  width: min(80%, 250px);
+}
+
+/* ================= MAIN WRAPPER ================= */
+.game-wrapper {
+  width: min(100%, 720px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 18px);
+  padding: var(--page-padding);
 }
 
 /* ================= TITLE ================= */
 h1 {
-  margin: 10px;
+  margin: 0;
+  font-size: clamp(1.35rem, 4.5vw, 2rem);
+  line-height: 1.2;
 }
 
 /* ================= INFO BAR ================= */
 #info {
+  width: 100%;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: clamp(8px, 2vw, 20px);
   flex-wrap: wrap;
+}
+
+#info p {
+  margin: 0;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 /* ================= GAME AREA ================= */
 #game-area {
-  width: 90vw;
-  max-width: 400px;
+  width: min(92vw, 500px);
   aspect-ratio: 1 / 1;
-  border: 2px solid #333;
-  margin: 20px auto;
+  border: 2px solid var(--border);
+  margin: 0 auto;
   position: relative;
-  background-color: white;
+  background-color: var(--card);
   overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* ================= DROPS ================= */
 .drop {
-  width: 40px;
-  height: 40px;
+  width: clamp(28px, 7vw, 45px);
+  height: clamp(28px, 7vw, 45px);
   background-image: url("img/water-can-transparent.png");
   background-size: cover;
   position: absolute;
   cursor: pointer;
   animation: popIn 0.2s ease;
+  will-change: transform;
 }
 
 .drop:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
 }
 
 /* BAD ITEM */
 .bad {
-  background: #fff2cc;
-  border: 2px solid #f5402c;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,22 +122,25 @@ h1 {
 
 /* ================= BUTTONS ================= */
 button {
-  padding: 10px 15px;
-  margin: 5px;
+  min-height: 44px;
+  padding: 10px 16px;
+  margin: 4px;
   cursor: pointer;
   border: none;
-  background-color: #2E9DF7;
-  color: white;
-  border-radius: 6px;
+  background-color: var(--brand-blue);
+  color: #fff;
+  border-radius: 8px;
+  font-size: clamp(0.88rem, 2.4vw, 1rem);
 }
 
 button:hover {
-  background-color: #1c7ed6;
+  background-color: var(--brand-blue-hover);
 }
 
-#start-btn {
-  background-color: #FFC907;
-  color: black;
+#start-btn,
+#difficulty button.active {
+  background-color: var(--brand-yellow);
+  color: #111;
 }
 
 /* ================= CONTROLS ================= */
@@ -95,107 +148,96 @@ button:hover {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 /* ================= DIFFICULTY ================= */
 #difficulty {
-  margin: 10px;
+  width: 100%;
+  margin: 0;
 }
 
-#difficulty button.active {
-  background-color: #FFC907;
+#difficulty p {
+  margin: 0 0 6px;
 }
 
 /* ================= FEEDBACK TEXT ================= */
 .feedback {
   position: absolute;
-  font-weight: bold;
+  font-weight: 700;
   animation: floatUp 1s forwards;
 }
 
 /* ================= ANIMATIONS ================= */
 @keyframes popIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes floatUp {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-40px); }
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
 }
 
 /* ================= GAME OVER ================= */
 #game-over {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 16px;
+}
+
+.overlay-content {
+  width: min(92vw, 420px);
+  background: var(--card);
+  padding: clamp(18px, 4vw, 30px);
+  border-radius: 10px;
 }
 
 .hidden {
   display: none !important;
 }
 
-.overlay-content {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-}
-
 /* ================= FOOTER ================= */
 footer {
-  margin-top: 30px;
-  padding: 15px;
+  width: 100%;
+  margin-top: auto;
+  padding: clamp(12px, 2vw, 16px);
   background: #f4f4f4;
 }
 
-/* ================= RESPONSIVE DESIGN ================= */
-
-/* Tablets */
-@media (max-width: 768px) {
-  #game-area {
-    max-width: 320px;
+/* ================= RESPONSIVE ADJUSTMENTS ================= */
+@media (min-width: 768px) {
+  .game-wrapper {
+    padding-top: 20px;
   }
 
-  .drop {
-    width: 35px;
-    height: 35px;
+  #game-area {
+    width: min(80vw, 500px);
   }
 }
 
-/* Phones */
 @media (max-width: 480px) {
-  h1 {
-    font-size: 20px;
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  #game-area {
-    max-width: 280px;
-  }
-
-  .drop {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-/* Large screens */
-@media (min-width: 1200px) {
-  #game-area {
-    max-width: 500px;
-  }
-
-  .drop {
-    width: 45px;
-    height: 45px;
+  .drop:hover {
+    transform: none;
   }
 }
