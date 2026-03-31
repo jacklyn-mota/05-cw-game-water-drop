@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Drop Game</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Clean Water Caravan</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-wrapper">
-        <h1 class="game-title">Water Drop</h1>
-        <p class="game-tagline">Catch the good drops, avoid the bad ones!</p>
-        <div class="score-panel">
-            <div class="score">Score: <span id="score">0</span></div>
-            <div class="timer">Time: <span id="time">30</span>s</div>
-            <button id="start-btn">Start Game</button>
-        </div>
-        
-        <div id="game-container">
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+
+  <!-- Header with logo -->
+  <header>
+    <img src="img/cw_logo_horizontal.png" alt="charity: water logo" class="header-logo">
+  </header>
+
+  <!-- Title -->
+  <h1>💧 Clean Water Caravan</h1>
+
+  <!-- Game Info -->
+  <div id="info">
+    <p id="score">Score: 0</p>
+    <p id="people">People Served: 0</p>
+    <p id="timer">Time: 30</p>
+  </div>
+
+  <!-- Game Area -->
+  <div id="game-area"></div>
+
+  <!-- Buttons -->
+  <div id="controls">
+    <button id="start-btn">Start Game</button>
+    <button id="reset-btn">Reset</button>
+  </div>
+
+  <!-- Game Over Overlay -->
+<div id="game-over" class="hidden">
+  <div class="overlay-content">
+    <h2>Game Over 💧</h2>
+    <p id="final-score"></p>
+    <p id="final-people"></p>
+    <button id="play-again-btn">Play Again</button>
+    <p id="message"></p>
+  </div>
+</div>
+
+  <script src="script.js"></script>
 </body>
 </html>
