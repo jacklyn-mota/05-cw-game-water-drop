@@ -20,7 +20,27 @@ const finalScoreEl = document.getElementById("final-score");
 const finalPeopleEl = document.getElementById("final-people");
 const playAgainBtn = document.getElementById("play-again-btn");
 const messageEl = document.getElementById("message");
+const collectSound = new Audio("sounds/click.mp3");
+const badSound = new Audio("sounds/bad.mp3");
+const winSound = new Audio("sounds/win.mp3");
 
+
+let difficulty = "normal";
+
+const settings = {
+  easy:   { time: 40, spawnMin: 1200, spawnMax: 1800, goal: 200 },
+  normal: { time: 30, spawnMin: 800,  spawnMax: 1500, goal: 300 },
+  hard:   { time: 20, spawnMin: 500,  spawnMax: 1000, goal: 400 }
+};
+
+const milestones = [
+  { score: 50, message: "Great start! 💧" },
+  { score: 100, message: "You're helping a village! 👏" },
+  { score: 200, message: "Halfway there! 🚰" },
+  { score: 300, message: "Incredible impact! 🌍" }
+];
+
+let shownMilestones = [];
 // -------------------
 // Game variables
 // -------------------
@@ -69,6 +89,10 @@ function startGame() {
 
   // Start countdown timer
   startTimer();
+
+  const config = settings[difficulty];
+
+timeLeft = config.time;
 }
 
 // -------------------
@@ -150,6 +174,7 @@ function spawnBadItem() {
 
   bad.style.left = `${x}px`;
   bad.style.top = `${y}px`;
+  
 
   // Click event for bad item
   bad.addEventListener("click", (event) => {
@@ -168,7 +193,8 @@ function spawnBadItem() {
     const clickX = event.clientX - rect.left;
     const clickY = event.clientY - rect.top;
     showNegativeFeedback(clickX, clickY, penalty);
-
+    collectSound.play();
+    combo = 0;
     bad.remove();
   });
 
@@ -198,25 +224,29 @@ function showNegativeFeedback(x, y, penalty = 10) {
 function collectWater(event) {
   if (!gameActive) return;
 
+  const drop = event.target;
+
   score += 10;
   peopleServed += 20;
+
   updateDisplay();
 
-  // Show visual feedback at click position
   const rect = gameArea.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
+
   showFeedback(x, y);
+  collectSound.play();
 
-  // NO additional spawn here! spawnDrop loop handles it
+  drop.remove(); // ✅ THIS is the key fix
 }
-
 // -------------------
 // Update Display
 // -------------------
 function updateDisplay() {
   scoreEl.textContent = `Score: ${score}`;
   peopleEl.textContent = `People Served: ${peopleServed}`;
+  checkMilestones();
 }
 
 // -------------------
@@ -239,6 +269,7 @@ function endGame() {
 
   launchConfetti();
   gameOverScreen.classList.remove("hidden");
+  collectSound.play();
 }
 
 // -------------------
@@ -346,4 +377,31 @@ function showNegativeFeedback(x, y, penalty = 10) {
   gameArea.appendChild(text);
 
   setTimeout(() => text.remove(), 1000);
+}
+
+function getSpawnInterval() {
+  const config = settings[difficulty];
+  return Math.random() * (config.spawnMax - config.spawnMin) + config.spawnMin;
+}
+
+ document.querySelectorAll("#difficulty button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    difficulty = btn.dataset.mode;
+  });
+});
+
+function checkMilestones() {
+  milestones.forEach(m => {
+    if (score >= m.score && !shownMilestones.includes(m.score)) {
+      messageEl.textContent = m.message;
+      shownMilestones.push(m.score);
+    }
+  });
+}
+
+let combo = 0;
+
+function collectWater(event) {
+  combo++;
+  score += 10 + combo * 2;
 }

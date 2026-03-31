@@ -63,11 +63,12 @@ header {
   width: 40px;
   height: 40px;
   background-image: url("img/water-can-transparent.png");
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
   cursor: pointer;
+  transition: transform 0.1s;
 }
 
 /* Bad item */
@@ -84,9 +85,10 @@ button {
   cursor: pointer;
 }
 
-.drop:active {
+.drop:hover {
   transform: scale(1.2);
 }
+
 
 /* Stack info on small screens */
 #info {
@@ -208,4 +210,11 @@ button {
     #game-container {
         height: 70vh;
     }
+}
+
+footer {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f4f4f4;
+  text-align: center;
 }
