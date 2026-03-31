@@ -46,10 +46,13 @@ header {
   background-color: var(--card);
   padding: clamp(12px, 2vw, 20px) 0;
   border-bottom: 2px solid var(--brand-yellow);
+  margin-bottom: clamp(10px, 2vw, 20px);
 }
 
 .header-logo {
   width: min(80%, 250px);
+  display: block;
+  margin: 6px auto;
 }
 
 /* ================= MAIN WRAPPER ================= */
